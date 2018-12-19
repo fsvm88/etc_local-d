@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for a in $(find /sys/bus/usb/devices/*/power/control -type f); do
+	echo "auto" > $a
+done
+
+cd /sys/bus/usb/devices
+UDIR=$(grep -l -e 'Mouse' -e 'USB Keyboard' -e 'USB Receiver' -e 'USB-I2C Bridge' */product | sed 's:/.*::')
+for a in $UDIR; do
+	echo "on" > $a/power/control
+done

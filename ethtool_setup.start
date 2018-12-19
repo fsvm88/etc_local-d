@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for a in rx tx sg tso gso gro rxvlan txvlan rx-all rx-fcs; do
+	ethtool -K enp7s0 $a on
+done

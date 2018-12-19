@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PATHUSB="/sys/bus/usb/devices"
+PATHPCI="/sys/bus/pci/devices"
+for a in $(find /sys/bus/pci/devices/*/power/control -type f); do
+	echo "auto" > $a
+done
+
+for a in $(ls $PATHUSB); do
+	if [[ -f "$PATHUSB/$a/product" ]]; then
+		if [[ $(grep -i -e "mouse" -e "usb receiver" $PATHUSB/$a/product ) ]]; then
+			echo "on" > $PATHUSB/$a/power/control
+		fi
+	fi
+done

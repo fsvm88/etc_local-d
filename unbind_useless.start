@@ -1,0 +1,16 @@
+#!/bin/bash
+
+UVCPATH="/sys/bus/usb/drivers/uvcvideo"
+UBINDPATH="${UVCPATH}/unbind"
+
+until [ -f "${UBINDPATH}" ]
+do
+	sleep 1
+done
+
+for TOREMOVE in "2-5:1.1" "2-5:1.2" "2-5:1.3"; do
+	if [ -L ${UVCPATH}/${TOREMOVE} ]; then
+		echo "Removing ${TOREMOVE}"
+		echo "${TOREMOVE}" > $UBINDPATH
+	fi
+done

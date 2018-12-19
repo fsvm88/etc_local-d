@@ -1,0 +1,9 @@
+#!/bin/bash
+
+KSM_DIR="/sys/kernel/mm/ksm"
+
+echo "Setting up KSM..."
+echo 300000 > "${KSM_DIR}/sleep_millisecs"
+echo 100000000 > "${KSM_DIR}/pages_to_scan"
+echo 1 > "${KSM_DIR}/run"
+echo "All done."
