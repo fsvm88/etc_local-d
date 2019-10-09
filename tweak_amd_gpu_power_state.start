@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo balanced > /sys/class/drm/card0/device/power_dpm_state
