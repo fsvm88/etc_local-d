@@ -9,7 +9,7 @@ while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
 done
 [ -d "$WATCH_DIR" ] || exit 0
 
-until [ -d $KSM_DIR ]; do sleep 1; done
+KSM_DIR="$WATCH_DIR"
 
 echo "Setting up KSM..."
 echo 15000 > "${KSM_DIR}/sleep_millisecs"
