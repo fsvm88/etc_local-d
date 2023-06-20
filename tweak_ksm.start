@@ -1,9 +1,18 @@
 #!/bin/bash
 
-KSM_DIR="/sys/kernel/mm/ksm"
+WATCH_DIR='/sys/kernel/mm/ksm/'
+
+STOP_AT=$(date +'%s' -d '+1 minute')
+while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
+    [ ! -d "$WATCH_DIR" ] && sleep 1
+    [ -d "$WATCH_DIR" ] && break
+done
+[ -d "$WATCH_DIR" ] || exit 0
+
+until [ -d $KSM_DIR ]; do sleep 1; done
 
 echo "Setting up KSM..."
-echo 300000 > "${KSM_DIR}/sleep_millisecs"
-echo 100000000 > "${KSM_DIR}/pages_to_scan"
+echo 15000 > "${KSM_DIR}/sleep_millisecs"
+echo 1000000 > "${KSM_DIR}/pages_to_scan"
 echo 1 > "${KSM_DIR}/run"
 echo "All done."

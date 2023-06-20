@@ -1,5 +1,15 @@
 #!/bin/bash
 
+WATCH_DIR='/sys/class/scsi_host/host*'
+
+STOP_AT=$(date +'%s' -d '+1 minute')
+while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
+    [ ! -d "$WATCH_DIR" ] && sleep 1
+    [ -d "$WATCH_DIR" ] && break
+done
+[ -d "$WATCH_DIR" ] || exit 0
+
+
 for a in $(find /sys/class/scsi_host/host*/link_power_management_policy -type f); do
-	echo "min_power" > $a
+	echo "medium_power" > $a
 done

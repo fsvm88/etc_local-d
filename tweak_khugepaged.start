@@ -1,0 +1,29 @@
+#!/bin/bash
+
+WATCH_DIR='/sys/kernel/mm/transparent_hugepage/'
+
+STOP_AT=$(date +'%s' -d '+1 minute')
+while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
+    [ ! -d "$WATCH_DIR" ] && sleep 1
+    [ -d "$WATCH_DIR" ] && break
+done
+[ -d "$WATCH_DIR" ] || exit 0
+
+BASE_PATH=/sys/kernel/mm/transparent_hugepage
+
+until [ -d $BASE_PATH ]; do sleep 1; done
+
+echo "always" > $BASE_PATH/defrag
+echo "always" > $BASE_PATH/enabled
+echo "always" > $BASE_PATH/shmem_enabled
+echo 1 > $BASE_PATH/use_zero_page
+
+BASE_PATH_KHPD=$BASE_PATH/khugepaged
+echo 5000 > $BASE_PATH_KHPD/alloc_sleep_millisecs
+echo 1 > $BASE_PATH_KHPD/defrag
+echo 511 > $BASE_PATH_KHPD/max_ptes_none
+echo 511 > $BASE_PATH_KHPD/max_ptes_swap
+echo 5000 > $BASE_PATH_KHPD/scan_sleep_millisecs
+echo 999999999 > $BASE_PATH_KHPD/pages_to_scan
+
+echo "KHugePageD tweaked!"

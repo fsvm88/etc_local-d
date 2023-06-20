@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+WATCH_DIR='/sys/devices/system/cpu/cpufreq/'
+
+STOP_AT=$(date +'%s' -d '+1 minute')
+while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
+    [ ! -d "$WATCH_DIR" ] && sleep 1
+    [ -d "$WATCH_DIR" ] && break
+done
+[ -d "$WATCH_DIR" ] || exit 0
+
+find /sys/devices/system/cpu/cpufreq/ -name "energy_performance_preference" | while read -r linea; do
+    echo 'balance_power' > ${linea}
+done

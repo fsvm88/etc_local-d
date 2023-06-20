@@ -1,3 +1,12 @@
 #!/bin/bash
 
+WATCH_DIR='/sys/module/snd_hda_intel/parameters/'
+
+STOP_AT=$(date +'%s' -d '+1 minute')
+while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
+    [ ! -d "$WATCH_DIR" ] && sleep 1
+    [ -d "$WATCH_DIR" ] && break
+done
+[ -d "$WATCH_DIR" ] || exit 0
+
 echo 1 > /sys/module/snd_hda_intel/parameters/power_save
