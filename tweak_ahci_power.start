@@ -2,7 +2,7 @@
 
 WATCH_DIR='/sys/class/scsi_host/host*'
 
-STOP_AT=$(date +'%s' -d '+1 minute')
+STOP_AT=$(date +'%s' -d '+10 seconds')
 while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
     [ ! -d "$WATCH_DIR" ] && sleep 1
     [ -d "$WATCH_DIR" ] && break
