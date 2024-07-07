@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 WATCH_DIR='/sys/class/drm/card0/device/'
 
@@ -9,4 +9,4 @@ while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
 done
 [ -d "$WATCH_DIR" ] || exit 0
 
-echo balanced > /sys/class/drm/card0/device/power_dpm_state
+echo balanced > $WATCH_DIR/power_dpm_state

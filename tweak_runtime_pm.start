@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 WATCH_DIR='/sys/bus/usb/devices/'
 

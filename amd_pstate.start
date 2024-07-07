@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 WATCH_DIR='/sys/devices/system/cpu/cpufreq/'
 
