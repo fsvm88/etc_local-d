@@ -15,14 +15,12 @@ PATHPCI="/sys/bus/pci/devices"
 until [ -d $PATHUSB ]; do sleep 1; done
 until [ -d $PATHPCI ]; do sleep 1; done
 
-for a in $(find /sys/bus/pci/devices/*/power/control -type f); do
-	echo "auto" > $a
-done
+find /sys/bus/pci/devices/*/power/control -type f -exec sh -c 'echo "auto" > "$1"' _ {} \;
 
-for a in $(ls $PATHUSB); do
-	if [[ -f "$PATHUSB/$a/product" ]]; then
-		if [[ $(grep -i -e "mouse" -e "usb receiver" $PATHUSB/$a/product ) ]]; then
-			echo "on" > $PATHUSB/$a/power/control
-		fi
-	fi
+for a in "$PATHUSB"/*/product; do
+    if grep -q -i -e "mouse" -e "usb receiver" "$a"; then
+        if [ -f "$a/power/control" ]; then
+            echo "on" > "$a/power/control"
+        fi
+    fi
 done

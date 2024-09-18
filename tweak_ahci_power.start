@@ -10,6 +10,4 @@ done
 [ -d "$WATCH_DIR" ] || exit 0
 
 
-for a in $(find /sys/class/scsi_host/host*/link_power_management_policy -type f); do
-	echo "medium_power" > $a
-done
+find /sys/class/scsi_host/host*/link_power_management_policy -type f -exec sh -c 'echo "medium_power" > "$1"' \;

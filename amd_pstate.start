@@ -10,5 +10,5 @@ done
 [ -d "$WATCH_DIR" ] || exit 0
 
 find /sys/devices/system/cpu/cpufreq/ -name "energy_performance_preference" | while read -r linea; do
-    echo 'balance_power' > ${linea}
+    echo 'balance_power' > "${linea}"
 done

@@ -9,12 +9,10 @@ while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
 done
 [ -d "$WATCH_DIR" ] || exit 0
 
-for a in $(find /sys/bus/usb/devices/*/power/control -type f); do
-	echo "auto" > $a
-done
+find /sys/bus/usb/devices/*/power/control -type f -exec sh -c 'echo "auto" > "$1"' _ {} \;
 
-cd /sys/bus/usb/devices
-UDIR=$(grep -l -e 'Mouse' -e 'USB Keyboard' -e 'USB Receiver' -e 'USB-I2C Bridge' */product | sed 's:/.*::')
-for a in $UDIR; do
-	echo "on" > $a/power/control
+for a in grep -l -e 'Mouse' -e 'USB Keyboard' -e 'USB Receiver' -e 'USB-I2C Bridge' /sys/bus/usb/devices/*/product; do
+    if [ -f "$a/power/control" ]; then
+	echo "on" > "$a/power/control"
+    fi
 done

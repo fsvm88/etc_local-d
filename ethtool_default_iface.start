@@ -1,10 +1,15 @@
 #!/usr/bin/bash
 
 # Grabs the interface being used for default routes
-IFACE="$(ip r | grep default | /usr/bin/grep -E '(dev) ([A-Za-z0-9]+)' -o | sed -e 's:.* ::')"
-[ -z "$IFACE" ] && exit 10
+IFACE=""
+TRIES=0
+while [ -z "$IFACE" ] && [ $TRIES -le 10 ]; do
+    sleep 1
+    IFACE="$(ip r | grep default | /usr/bin/grep -E '(dev) ([A-Za-z0-9]+)' -o | sed -e 's:.* ::')"
+    (( TRIES++ ))
+done
 
 for a in rx tx sg tso gso gro rxvlan txvlan rx-all rx-fcs; do
-	ethtool -K $IFACE $a on
+	ethtool -K "$IFACE" $a on
 done
 
