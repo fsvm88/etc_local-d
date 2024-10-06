@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-WATCH_DIR='/sys/bus/usb/devices/usb1/power/'
+WATCH_DIR='/sys/bus/usb/devices/'
 
 STOP_AT=$(date +'%s' -d '+1 minute')
 while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
@@ -11,8 +11,9 @@ done
 
 find /sys/bus/usb/devices/*/power/control -type f -exec sh -c 'echo "auto" > "$1"' _ {} \;
 
-for a in grep -l -e 'Mouse' -e 'USB Keyboard' -e 'USB Receiver' -e 'USB-I2C Bridge' /sys/bus/usb/devices/*/product; do
-    if [ -f "$a/power/control" ]; then
+for a in $(grep -l -i -e 'Mouse' -e 'USB Keyboard' -e 'USB Receiver' -e 'USB-I2C Bridge' $WATCH_DIR/*/product | sed 's:/product$::'); do
+    if [ -e "$a/power/control" ]; then
+        echo "$a/power/control -> on"
 	echo "on" > "$a/power/control"
     fi
 done

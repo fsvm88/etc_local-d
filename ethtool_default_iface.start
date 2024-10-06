@@ -10,6 +10,6 @@ while [ -z "$IFACE" ] && [ $TRIES -le 10 ]; do
 done
 
 for a in rx tx sg tso gso gro rxvlan txvlan rx-all rx-fcs; do
-	ethtool -K "$IFACE" $a on
+	ethtool -K "$IFACE" $a on || true
 done
 
