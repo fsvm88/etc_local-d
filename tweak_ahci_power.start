@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-WATCH_DIR='/sys/class/scsi_host/host*'
+WATCH_DIR='/sys/class/scsi_host/host0'
 
 STOP_AT=$(date +'%s' -d '+10 seconds')
 while [ "$(date +'%s')" -lt "$STOP_AT" ]; do
@@ -10,4 +10,4 @@ done
 [ -d "$WATCH_DIR" ] || exit 0
 
 
-find /sys/class/scsi_host/host*/link_power_management_policy -type f -exec sh -c 'echo "medium_power" > "$1"' \;
+find /sys/class/scsi_host/host* -name "link_power_management_policy" -type f -exec sh -c 'echo "medium_power" > "$1"' \;
